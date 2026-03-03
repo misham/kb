@@ -1,6 +1,10 @@
 package cmd
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/alecthomas/kong"
+)
 
 // Version, Commit, and Date are set via -ldflags at build time.
 var (
@@ -11,9 +15,10 @@ var (
 
 // CLI defines the top-level command structure for kb.
 type CLI struct {
-	DB      string     `help:"Path to database." default:"kb.db" env:"KB_DB"`
-	Plain   bool       `help:"Disable styled output."`
-	Version VersionCmd `cmd:"" help:"Show version information."`
+	DB          string           `help:"Path to database." default:"kb.db" env:"KB_DB"`
+	Plain       bool             `help:"Disable styled output."`
+	VersionFlag kong.VersionFlag `name:"version" short:"v" help:"Show version information."`
+	Version     VersionCmd       `cmd:"" help:"Show version information."`
 	Init    InitCmd    `cmd:"" help:"Create a new knowledge base."`
 	Import  ImportCmd  `cmd:"" help:"Import a markdown file."`
 	Search  SearchCmd  `cmd:"" help:"Search the knowledge base."`

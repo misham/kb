@@ -38,6 +38,7 @@ func main() {
 		kong.Description("A knowledge base CLI backed by SQLite."),
 		kong.UsageOnError(),
 		kong.Help(cmd.HelpPrinter),
+		kong.Vars{"version": fmt.Sprintf("kb %s\ncommit: %s\nbuilt:  %s", version, commit, date)},
 	)
 	if err := ctx.Run(&cli); err != nil {
 		if cmd.PlainOutput {
