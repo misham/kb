@@ -1,0 +1,5 @@
+kb
+coverage.out
+*.db
+!docs/kb.db
+docs/ai/*
