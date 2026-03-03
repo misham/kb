@@ -11,9 +11,18 @@ import (
 	"kb/cmd"
 )
 
+var (
+	version = "dev"
+	commit  = "none"
+	date    = "unknown"
+)
+
 var errStyle = lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Red)
 
 func main() {
+	cmd.Version = version
+	cmd.Commit = commit
+	cmd.Date = date
 	// Set PlainOutput before kong.Parse because kong's HelpPrinter fires
 	// during Parse (via BeforeReset), before flag values are applied to the struct.
 	for _, arg := range os.Args[1:] {
