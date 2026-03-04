@@ -34,8 +34,8 @@ fmt-check:
 vet:
 	go vet ./...
 
-# Run all checks (what CI would run)
-check: fmt-check vet lint test
+# Run all static checks
+check: fmt-check vet lint
 
 # Install development tools
 install-tools:

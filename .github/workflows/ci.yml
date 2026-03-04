@@ -22,5 +22,8 @@ jobs:
       - name: Install tools
         run: make install-tools
 
-      - name: Run checks
+      - name: Static checks
         run: make check
+
+      - name: Tests
+        run: make test

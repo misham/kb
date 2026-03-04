@@ -19,14 +19,14 @@ type CLI struct {
 	Plain       bool             `help:"Disable styled output."`
 	VersionFlag kong.VersionFlag `name:"version" short:"v" help:"Show version information."`
 	Version     VersionCmd       `cmd:"" help:"Show version information."`
-	Init    InitCmd    `cmd:"" help:"Create a new knowledge base."`
-	Import  ImportCmd  `cmd:"" help:"Import a markdown file."`
-	Search  SearchCmd  `cmd:"" help:"Search the knowledge base."`
-	List    ListCmd    `cmd:"" help:"List documents."`
-	Get     GetCmd     `cmd:"" help:"Display a document."`
-	Delete  DeleteCmd  `cmd:"" help:"Delete a document."`
-	Link    LinkCmd    `cmd:"" help:"Link two documents."`
-	Links   LinksCmd   `cmd:"" help:"Show linked documents."`
+	Init        InitCmd          `cmd:"" help:"Create a new knowledge base."`
+	Import      ImportCmd        `cmd:"" help:"Import a markdown file."`
+	Search      SearchCmd        `cmd:"" help:"Search the knowledge base."`
+	List        ListCmd          `cmd:"" help:"List documents."`
+	Get         GetCmd           `cmd:"" help:"Display a document."`
+	Delete      DeleteCmd        `cmd:"" help:"Delete a document."`
+	Link        LinkCmd          `cmd:"" help:"Link two documents."`
+	Links       LinksCmd         `cmd:"" help:"Show linked documents."`
 }
 
 // VersionCmd prints version information.
