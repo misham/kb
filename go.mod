@@ -1,6 +1,6 @@
 module kb
 
-go 1.25.0
+go 1.26.0
 
 require (
 	charm.land/lipgloss/v2 v2.0.0
