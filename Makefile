@@ -1,4 +1,4 @@
-.PHONY: build test lint fmt vet check clean install-tools
+.PHONY: build test lint fmt vet vulncheck check clean install-tools
 
 VERSION ?= $(shell git describe --tags --always --dirty 2>/dev/null || echo "dev")
 COMMIT  ?= $(shell git rev-parse --short HEAD 2>/dev/null || echo "none")
@@ -34,13 +34,18 @@ fmt-check:
 vet:
 	go vet ./...
 
+# Vulnerability check
+vulncheck:
+	govulncheck ./...
+
 # Run all static checks
-check: fmt-check vet lint
+check: fmt-check vet lint vulncheck
 
 # Install development tools
 install-tools:
 	go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@latest
 	go install mvdan.cc/gofumpt@latest
+	go install golang.org/x/vuln/cmd/govulncheck@latest
 
 # Clean build artifacts
 clean:
