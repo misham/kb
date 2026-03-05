@@ -20,7 +20,7 @@ type CLI struct {
 	VersionFlag kong.VersionFlag `name:"version" short:"v" help:"Show version information."`
 	Version     VersionCmd       `cmd:"" help:"Show version information."`
 	Init        InitCmd          `cmd:"" help:"Create a new knowledge base."`
-	Import      ImportCmd        `cmd:"" help:"Import a markdown file."`
+	Import      ImportCmd        `cmd:"" help:"Import markdown files."`
 	Search      SearchCmd        `cmd:"" help:"Search the knowledge base."`
 	List        ListCmd          `cmd:"" help:"List documents."`
 	Get         GetCmd           `cmd:"" help:"Display a document."`

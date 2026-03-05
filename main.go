@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"os"
 
@@ -33,19 +34,36 @@ func main() {
 	}
 
 	var cli cmd.CLI
-	ctx := kong.Parse(&cli,
+	parser, err := kong.New(&cli,
 		kong.Name("kb"),
 		kong.Description("A knowledge base CLI backed by SQLite."),
-		kong.UsageOnError(),
 		kong.Help(cmd.HelpPrinter),
 		kong.Vars{"version": fmt.Sprintf("kb %s\ncommit: %s\nbuilt:  %s", version, commit, date)},
 	)
-	if err := ctx.Run(&cli); err != nil {
-		if cmd.PlainOutput {
-			fmt.Fprintln(os.Stderr, "Error: "+err.Error())
-		} else {
-			fmt.Fprintln(os.Stderr, errStyle.Render("Error: "+err.Error()))
+	if err != nil {
+		panic(err)
+	}
+
+	ctx, err := parser.Parse(os.Args[1:])
+	if err != nil {
+		printErrMsg(err.Error())
+		var parseErr *kong.ParseError
+		if errors.As(err, &parseErr) {
+			_ = parseErr.Context.PrintUsage(false)
 		}
 		os.Exit(1)
+	}
+	if err := ctx.Run(&cli); err != nil {
+		printErrMsg(err.Error())
+		os.Exit(1)
+	}
+}
+
+func printErrMsg(msg string) {
+	// nosec: msg is derived from internal error strings, not raw user input.
+	if cmd.PlainOutput {
+		fmt.Fprintln(os.Stderr, "Error: "+msg) //nolint:gosec
+	} else {
+		fmt.Fprintln(os.Stderr, errStyle.Render("Error: "+msg)) //nolint:gosec
 	}
 }

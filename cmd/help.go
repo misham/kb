@@ -22,7 +22,7 @@ var (
 
 var commandExamples = map[string][]string{
 	"init":   {"kb init", "kb --db ~/notes.db init"},
-	"import": {"kb import notes.md -t research", "kb import 2024-01-15-plan.md -t plan"},
+	"import": {"kb import notes.md -t research", "kb import *.md -t plan"},
 	"search": {"kb search goroutines", "kb search sqlite -t research", `kb search '"exact phrase"'`},
 	"list":   {"kb list", "kb list -t research"},
 	"get":    {"kb get 1"},
@@ -74,7 +74,7 @@ func printAppHelp(ctx *kong.Context) error {
 	fmt.Fprintln(ctx.Stdout)
 	fmt.Fprintln(ctx.Stdout, render(helpSectionStyle, "Examples"))
 	fmt.Fprintln(ctx.Stdout, "  kb init")
-	fmt.Fprintln(ctx.Stdout, "  kb import notes.md -t research")
+	fmt.Fprintln(ctx.Stdout, "  kb import notes.md plan.md -t research")
 	fmt.Fprintln(ctx.Stdout, "  kb search goroutines -t research")
 	fmt.Fprintln(ctx.Stdout, "  kb list -t plan")
 	fmt.Fprintln(ctx.Stdout, "  kb link 1 2 -r related")
