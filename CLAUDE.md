@@ -34,6 +34,7 @@ SQLite-backed CLI for storing and searching markdown documents with YAML frontma
 - **FTS5 full-text search** with BM25 ranking. FTS index kept in sync via SQL triggers (insert/update/delete).
 - **Frontmatter parsing** with `github.com/adrg/frontmatter` — YAML/TOML/JSON frontmatter stored as opaque JSON in the `metadata` column.
 - **Document linking** — many-to-many `document_links` table with optional relationship labels, cascade deletes.
+- **Git merge driver** — `cmd/merge_driver.go` and `cmd/setup_git.go` register a custom git merge driver for `*.db` files. Merge logic in `internal/store/merge.go` does a two-way merge: documents matched by `(type, title)`, last-writer-wins by `updated_at`, links remapped via ID map. `setup-git` configures both a merge driver (automatic) and mergetool (manual fallback). Schema enforces `UNIQUE(type, title)` via `idx_doc_type_title`.
 - **Styled output** via Lipgloss/Glamour with `--plain` flag for plain text mode. `PlainOutput` is set before `kong.Parse` due to help printer firing during parse.
 - **Goroutine leak detection** — both test packages use `go.uber.org/goleak` in `TestMain`.
 

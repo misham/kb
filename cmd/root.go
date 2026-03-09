@@ -27,6 +27,8 @@ type CLI struct {
 	Delete      DeleteCmd        `cmd:"" help:"Delete a document."`
 	Link        LinkCmd          `cmd:"" help:"Link two documents."`
 	Links       LinksCmd         `cmd:"" help:"Show linked documents."`
+	MergeDriver MergeDriverCmd   `cmd:"" name:"merge-driver" help:"Merge two kb databases during git merge. Git invokes this automatically when merging *.db files. Documents are matched by (type, title); the newer version wins conflicts. Run 'kb setup-git' first to register the driver."`
+	SetupGit    SetupGitCmd      `cmd:"" name:"setup-git" help:"Register kb as a git merge driver and mergetool so that 'git merge' resolves kb.db conflicts automatically. If a conflict still occurs, run 'git mergetool --tool=kb' to resolve it."`
 }
 
 // VersionCmd prints version information.

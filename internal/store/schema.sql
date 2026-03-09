@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS document_links (
     PRIMARY KEY (source_id, target_id)
 );
 
+CREATE UNIQUE INDEX IF NOT EXISTS idx_doc_type_title ON documents(type, title);
 CREATE INDEX IF NOT EXISTS idx_doc_type ON documents(type);
 CREATE INDEX IF NOT EXISTS idx_link_source ON document_links(source_id);
 CREATE INDEX IF NOT EXISTS idx_link_target ON document_links(target_id);
