@@ -40,3 +40,7 @@ homebrew_casks:
     license: "MIT"
     binaries:
       - kb
+    hooks:
+      post:
+        install: |
+          system_command "/bin/sh", args: ["-c", "/usr/bin/xattr -dr com.apple.quarantine #{staged_path}/kb-*"]
