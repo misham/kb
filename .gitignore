@@ -1,4 +1,5 @@
 kb
+dist/
 coverage.out
 *.db
 !docs/kb.db

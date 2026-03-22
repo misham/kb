@@ -1,0 +1,46 @@
+version: 2
+
+builds:
+  - env:
+      - CGO_ENABLED=0
+    goos:
+      - darwin
+      - linux
+    goarch:
+      - amd64
+      - arm64
+    ignore:
+      - goos: linux
+        goarch: arm64
+    ldflags:
+      - -s -w -X main.version={{.Version}} -X main.commit={{.Commit}} -X main.date={{.Date}}
+
+archives:
+  - formats:
+      - binary
+    name_template: "{{ .ProjectName }}-{{ .Os }}-{{ .Arch }}"
+
+checksum:
+  name_template: "checksums.txt"
+
+release:
+  draft: false
+  mode: keep-existing
+
+homebrew_casks:
+  - repository:
+      owner: misham
+      name: homebrew-twistedkeg
+      token: "{{ .Env.HOMEBREW_TAP_TOKEN }}"
+      pull_request:
+        enabled: true
+    directory: Casks
+    homepage: "https://github.com/misham/kb"
+    description: "A CLI knowledge base backed by SQLite — store, search, and link markdown documents with YAML frontmatter metadata"
+    license: "MIT"
+    binaries:
+      - kb
+    hooks:
+      post:
+        install: |
+          system_command "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "#{staged_path}/kb"]

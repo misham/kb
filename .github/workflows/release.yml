@@ -15,35 +15,24 @@ permissions:
 jobs:
   release:
     runs-on: ubuntu-latest
-    env:
-      RELEASE_VERSION: ${{ github.event.inputs.version || github.ref_name }}
-      COMMIT_SHA: ${{ github.sha }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - uses: actions/setup-go@v5
         with:
           go-version-file: go.mod
 
-      - name: Build binaries
+      - name: Set version for workflow_dispatch
+        if: github.event_name == 'workflow_dispatch'
         run: |
-          date="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-          ldflags="-s -w -X main.version=${RELEASE_VERSION} -X main.commit=${COMMIT_SHA} -X main.date=${date}"
+          git tag "${{ github.event.inputs.version }}"
 
-          CGO_ENABLED=0 GOOS=darwin GOARCH=arm64 go build -ldflags "${ldflags}" -o kb-darwin-arm64 .
-          CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build -ldflags "${ldflags}" -o kb-darwin-amd64 .
-          CGO_ENABLED=0 GOOS=linux  GOARCH=amd64 go build -ldflags "${ldflags}" -o kb-linux-amd64  .
-
-      - name: Generate checksums
-        run: sha256sum kb-darwin-arm64 kb-darwin-amd64 kb-linux-amd64 > checksums.txt
-
-      - name: Create release
+      - uses: goreleaser/goreleaser-action@v6
+        with:
+          version: "~> v2"
+          args: release --clean
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh release create "$RELEASE_VERSION" \
-            --generate-notes \
-            kb-darwin-arm64 \
-            kb-darwin-amd64 \
-            kb-linux-amd64 \
-            checksums.txt
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          HOMEBREW_TAP_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
